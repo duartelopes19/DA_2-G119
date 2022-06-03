@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "edmondskarp.cpp"
+#include "graph.h"
+#include "graph.cpp"
 #include <string>
 #include <fstream>
 
@@ -11,7 +12,7 @@ void addgraph(string file) {
     ifstream ficheiro(file);
     getline(ficheiro, temp, ' ');
      n = stoi(temp);
-    Graph *g = new Graph(n);
+    Graph *g = new Graph(n,true);
     getline(ficheiro, temp, '\n');
     e = stoi(temp);
     int i =1;
@@ -24,11 +25,11 @@ void addgraph(string file) {
         c = stoi(temp);
         getline(ficheiro, temp, '\n');
         d = stoi(temp);
-        g->addLink(a, b, c, d);
+        g->addEdge(a, b, c, d);
         i++;
     }
 
-    int option, flow, grupo, s, t;;
+    int option, grupo, s, t;
     while(true) {
         cout << endl << " Agencia de Viagens" << endl << endl;
         cout << "1 - Cenario 1.1: maximizar dimensão do grupo e indicar UM encaminhamento" << endl;
@@ -42,26 +43,61 @@ void addgraph(string file) {
         cout << "Opcao: ";
         cin >> option;
         switch (option) {
-            case 1:
+            case 1: {
+                cout << "Indique partida e a chegada: ";
+                cin >> s >> t;
+                pair<vector<int>, int> k = g->dijkstra_maximize_capacity(s, t);
+
+                cout << "Encaminhamento com capacidade = " << k.second << ": (";
+
+                for (int i = 0; i < k.first.size(); i++) {
+                    cout << k.first[i];
+                    if (i != k.first.size() - 1) { cout << ","; }
+                }
+                cout << "\n";
+                break;
+            }
+            case 2: {
+                pair<vector<int>,int> j = g->dijkstra_minimize_edges(0,e-1);
+                pair<vector<int>,int> k = g->dijkstra_maximize_capacity(0, e-1);
+
+                if(std::equal(j.first.begin(),j.first.end(), k.first.begin())) {
+                    std::cout << "Path that both maximizes capacity and minimizes edges: (";
+                }
+
+                else {
+                    std::cout<<"Path that maximizes capacity: (";
+
+                    for(int i=0; i<k.first.size(); i++){
+                        std::cout << k.first[i];
+                        if(i!=k.first.size()-1){std::cout<<",";}
+                    }
+                    std::cout<<")\nCapacity: "<<k.second<<" Edges: "<<k.first.size()<< "\n\n";
+
+                    std::cout << "Path that minimizes edges: (";
+                }
+
+                for (int i = 0; i < j.first.size(); i++) {
+                    std::cout << j.first[i];
+                    if (i != j.first.size() - 1) { std::cout << ","; }
+                }
+
+                std::cout << ")\nCapacity: " << j.second << " Edges: " << j.first.size()<< "\n\n";
 
                 break;
-            case 2:
-
-                break;
-
+            }
             case 3:
                 cout << "Indique partida, chegada e dimensão do grupo: ";
                 cin >> s >> t >> grupo;
-                flow = g->maxFlow_Capacity(s, t, grupo);
+                //flow = g->maxFlow_Capacity(s, t, grupo);
                 break;
             case 4:
                 break;
             case 5:
                 cout << "Indique partida e chegada: ";
                 cin >> s >> t;
-                flow = g->maxFlow_Capacity(s, t);
+                cout << "Max flow: " << g->edmonds_karp(s,t) << endl;
                 break;
-
             case 6:
                 break;
             case 7:
@@ -74,5 +110,4 @@ void addgraph(string file) {
         char c;
         cin >> c;
     }
-    cout << "dimensão máxima: " << flow;
 }
