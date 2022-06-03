@@ -38,12 +38,12 @@ public:
 
     // BFS para encontrar caminho de aumento
     // devolve valor do fluxo de capacidades nesse caminho
-    int bfs_capacity(int s, int t, vector<int> &parent) {
+    int bfs_capacity(int s, int t, vector<int> &parent, int grupo) {
         for (int i = 1; i <= n; i++) parent[i] = -1;
 
         parent[s] = -2;
         queue<pair<int, int>> q; // fila do BFS com pares (no, capacidade)
-        q.push({s, INT_MAX});    // inicializar com no origem e capacidade infinita
+        q.push({s, grupo});    // inicializar com no origem e capacidade infinita
 
         while (!q.empty()) {
             // returnar primeiro no da fila
@@ -69,12 +69,12 @@ public:
 
     // Algoritmo de Edmonds-Karp para fluxo maximo para capacidades entre s e t
     // devolve valor do fluxo maximo para capacidades (cap[][] fica com grafo residual)
-    int maxFlow_Capacity(int s, int t) {
+    int maxFlow_Capacity(int s, int t, int i = INT_MAX) {
         int flow = 0;             // fluxo a calcular
         vector<int> parent(n + 1);  // vetor de pais (permite reconstruir caminho)
 
         while (true) {
-            int new_flow = bfs_capacity(s, t, parent); // fluxo de um caminho de aumento
+            int new_flow = bfs_capacity(s, t, parent, i); // fluxo de um caminho de aumento
             if (new_flow == 0) break;         // se nao existir, terminar
 
             // imprimir fluxo e caminho de aumento
@@ -102,7 +102,7 @@ public:
 
         parent[s] = -2;
         queue<pair<int, int>> q; // fila do BFS com pares (no, capacidade)
-        q.push({s, INT_MAX});    // inicializar com no origem e capacidade infinita
+        q.push({s, 2});    // inicializar com no origem e capacidade infinita
 
         while (!q.empty()) {
             // returnar primeiro no da fila
