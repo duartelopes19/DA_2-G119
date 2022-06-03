@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
 
-    addgraph("Tests_B/in01_b.txt");
+    addgraph("../Tests_B/in09_b.txt");
 
     return 0;
 }

@@ -29,46 +29,50 @@ void addgraph(string file) {
     }
 
     int option, flow, grupo, s, t;;
-    cout << endl << " Agencia de Viagens" << endl << endl;
-    cout << "1 - Cenario 1: maximizar dimensão do grupo e indicar UM encaminhamento" << endl;
-    cout << "2 - Cenario 2: maximizar dimensão do grupo e minimizar transbordos" << endl;
-    cout << "3 - Cenario 3: indicar um encaminhamento dado a dimensão" << endl;
-    cout << "4 - Cenario 4: corrigir o encaminhamento para que o grupo possa aumentar" << endl;
-    cout << "5 - Cenario 5: dimensão maxima do grupo e um encaminhamento" << endl;
-    cout << "6 - Cenario 6: dado um encaminhamento, determinar quando o grupo se reuniria novamente" << endl;
-    cout << "7 - Cenario 7: tempo máximo de espera e locais onde esperam esse tempo" << endl;
-    cout << "8 - Sair" << endl << endl;
-    cout << "Opcao: ";
-    cin >> option;
-    switch (option) {
-        case 1:
+    while(true) {
+        cout << endl << " Agencia de Viagens" << endl << endl;
+        cout << "1 - Cenario 1.1: maximizar dimensão do grupo e indicar UM encaminhamento" << endl;
+        cout << "2 - Cenario 1.2: maximizar dimensão do grupo e minimizar transbordos" << endl;
+        cout << "3 - Cenario 2.1: indicar um encaminhamento dado a dimensão" << endl;
+        cout << "4 - Cenario 2.2: corrigir o encaminhamento para que o grupo possa aumentar" << endl;
+        cout << "5 - Cenario 2.3: dimensão maxima do grupo e um encaminhamento" << endl;
+        cout << "6 - Cenario 2.4: dado um encaminhamento, determinar quando o grupo se reuniria novamente" << endl;
+        cout << "7 - Cenario 2.5: tempo máximo de espera e locais onde esperam esse tempo" << endl;
+        cout << "8 - Sair" << endl << endl;
+        cout << "Opcao: ";
+        cin >> option;
+        switch (option) {
+            case 1:
 
-            break;
-        case 2:
+                break;
+            case 2:
 
-            break;
+                break;
 
-        case 3:
-            cout << "Indique partida, chegada e dimensão do grupo: ";
-            cin >> s >> t >> grupo;
-            flow = g->maxFlow_Capacity(s, t, grupo);
-            break;
-        case 4:
-            break;
-        case 5:
-            cout << "Indique partida e chegada: ";
-            cin >> s >> t;
-            flow = g->maxFlow_Capacity(s, t);
-            break;
+            case 3:
+                cout << "Indique partida, chegada e dimensão do grupo: ";
+                cin >> s >> t >> grupo;
+                flow = g->maxFlow_Capacity(s, t, grupo);
+                break;
+            case 4:
+                break;
+            case 5:
+                cout << "Indique partida e chegada: ";
+                cin >> s >> t;
+                flow = g->maxFlow_Capacity(s, t);
+                break;
 
-        case 6:
-            break;
-        case 7:
+            case 6:
+                break;
+            case 7:
 
-            break;
-        default:
-            return ;
+                break;
+            default:
+                return;
+        }
+        cout << "\nPress any key to continue\n";
+        char c;
+        cin >> c;
     }
-
     cout << "dimensão máxima: " << flow;
 }
