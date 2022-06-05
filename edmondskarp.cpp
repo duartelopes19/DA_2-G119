@@ -5,18 +5,19 @@
 #include <climits>
 #include <vector>
 #include <queue>
+#include <set>
 
 using namespace std;
 
 // Classe que representa um grafo
-class Graph {
+class Graph2 {
 public:
     int n;                    // Numero de nos do grafo
     vector<vector<int>> adj; // Lista de adjacencias
     vector<vector<int>> cap; // Matriz de capacidades
     vector<vector<int>> dur; // Matriz de capacidad
 
-    Graph(int n) {
+    Graph2(int n) {
         this->n = n;
         adj.resize(n + 1); // +1 se os nos comecam em 1 ao inves de 0
         cap.resize(n + 1);
@@ -38,12 +39,12 @@ public:
 
     // BFS para encontrar caminho de aumento
     // devolve valor do fluxo de capacidades nesse caminho
-    int bfs_capacity(int s, int t, vector<int> &parent, int grupo) {
+    int bfs_capacity(int s, int t, vector<int> &parent) {
         for (int i = 1; i <= n; i++) parent[i] = -1;
 
         parent[s] = -2;
         queue<pair<int, int>> q; // fila do BFS com pares (no, capacidade)
-        q.push({s, grupo});    // inicializar com no origem e capacidade infinita
+        q.push({s, INT_MAX});    // inicializar com no origem e capacidade infinita
 
         while (!q.empty()) {
             // returnar primeiro no da fila
@@ -69,16 +70,18 @@ public:
 
     // Algoritmo de Edmonds-Karp para fluxo maximo para capacidades entre s e t
     // devolve valor do fluxo maximo para capacidades (cap[][] fica com grafo residual)
-    int maxFlow_Capacity(int s, int t, int i = INT_MAX) {
+    int maxFlow_Capacity(int s, int t, int i = 0, int j = 0) {
         int flow = 0;             // fluxo a calcular
-        vector<int> parent(n + 1);  // vetor de pais (permite reconstruir caminho)
+        vector<int> parent(n + 1); // vetor de pais (permite reconstruir caminho)
+        set<int> path;
+
 
         while (true) {
-            int new_flow = bfs_capacity(s, t, parent, i); // fluxo de um caminho de aumento
+            int new_flow = bfs_capacity(s, t, parent);// fluxo de um caminho de aumento
             if (new_flow == 0) break;         // se nao existir, terminar
 
             // imprimir fluxo e caminho de aumento
-            cout << "Caminho de aumento: fluxo " << new_flow << " | " << t;
+          //  cout << "Caminho de aumento: fluxo " << new_flow << " | " << t;
 
             flow += new_flow;  // aumentar fluxo total com fluxo deste caminho
             int cur = t;
@@ -87,10 +90,17 @@ public:
                 cap[prev][cur] -= new_flow;
                 cap[cur][prev] += new_flow;
                 cur = prev;
-                cout << " <- " << cur; // imprimir proximo no do caminho
+                //cout << " <- " << cur;
+                path.insert(cur);
+                // imprimir proximo no do caminho
             }
-            cout << endl;
+           // cout << endl;
         }
+        if(flow < i) return 0;
+        if(flow < i + j) return 0;
+        for(int i : path)
+            cout << i << "->";
+        cout << t << endl;
 
         return flow;
     }

@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/DA_T2_G119.dir/main.cpp.o  -o DA_T2_G119 

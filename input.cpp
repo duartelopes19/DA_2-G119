@@ -4,33 +4,43 @@
 #include "graph.cpp"
 #include <string>
 #include <fstream>
+#include "edmondskarp.cpp"
 
 void addgraph(string file) {
+
+    while(true) {
     string temp;
 
     int n, e, a, b, c, d;
     ifstream ficheiro(file);
     getline(ficheiro, temp, ' ');
      n = stoi(temp);
-    Graph *g = new Graph(n,true);
+    Graph *g1 = new Graph(n, true);
+    Graph2 *g2 = new Graph2(n);
     getline(ficheiro, temp, '\n');
     e = stoi(temp);
     int i =1;
-    while (!ficheiro.eof() && i < e) {
+    int start, finish;
+    while (!ficheiro.eof() && i <= e) {
         getline(ficheiro, temp, ' ');
         a = stoi(temp);
+        if (i==1)
+            start = a;
         getline(ficheiro, temp, ' ');
         b = stoi(temp);
+        if (i==e)
+            finish = b;
         getline(ficheiro, temp, ' ');
         c = stoi(temp);
         getline(ficheiro, temp, '\n');
         d = stoi(temp);
-        g->addEdge(a, b, c, d);
+        g1->addEdge(a, b, c, d);
+        g2->addLink(a,b,c,d);
         i++;
     }
 
-    int option, grupo, s, t;
-    while(true) {
+    int option, s, t, grupo, ajuste;
+
         cout << endl << " Agencia de Viagens" << endl << endl;
         cout << "1 - Cenario 1.1: maximizar dimensão do grupo e indicar UM encaminhamento" << endl;
         cout << "2 - Cenario 1.2: maximizar dimensão do grupo e minimizar transbordos" << endl;
@@ -46,7 +56,7 @@ void addgraph(string file) {
             case 1: {
                 cout << "Indique partida e a chegada: ";
                 cin >> s >> t;
-                pair<vector<int>, int> k = g->dijkstra_maximize_capacity(s, t);
+                pair<vector<int>, int> k = g1->dijkstra_maximize_capacity(s, t);
 
                 cout << "Encaminhamento com capacidade = " << k.second << ": (";
 
@@ -54,12 +64,12 @@ void addgraph(string file) {
                     cout << k.first[i];
                     if (i != k.first.size() - 1) { cout << ","; }
                 }
-                cout << "\n";
+                cout << ")\n";
                 break;
             }
             case 2: {
-                pair<vector<int>,int> j = g->dijkstra_minimize_edges(0,e-1);
-                pair<vector<int>,int> k = g->dijkstra_maximize_capacity(0, e-1);
+                pair<vector<int>,int> j = g1->dijkstra_minimize_edges(start, finish);
+                pair<vector<int>,int> k = g1->dijkstra_maximize_capacity(start, finish);
 
                 if(std::equal(j.first.begin(),j.first.end(), k.first.begin())) {
                     std::cout << "Path that both maximizes capacity and minimizes edges: (";
@@ -89,15 +99,22 @@ void addgraph(string file) {
             case 3:
                 cout << "Indique partida, chegada e dimensão do grupo: ";
                 cin >> s >> t >> grupo;
-                //flow = g->maxFlow_Capacity(s, t, grupo);
+
+                cout << g2->maxFlow_Capacity(s, t, grupo) << endl;
                 break;
             case 4:
+                cout << "Indique partida, chegada, dimensão do grupo e ajuste: ";
+                cin >> s >> t >> grupo >> ajuste;
+
+                cout << g2->maxFlow_Capacity(s, t, grupo, ajuste) << endl;
                 break;
-            case 5:
+            case 5: {
                 cout << "Indique partida e chegada: ";
                 cin >> s >> t;
-                cout << "Max flow: " << g->edmonds_karp(s,t) << endl;
+                int max = g2->maxFlow_Capacity(s, t);
+                cout << "Dimensão máxima: " << max << endl;
                 break;
+            }
             case 6:
                 break;
             case 7:
@@ -107,7 +124,7 @@ void addgraph(string file) {
                 return;
         }
         cout << "\nPress any key to continue\n";
-        char c;
-        cin >> c;
+        char c2;
+        cin >> c2;
     }
 }
