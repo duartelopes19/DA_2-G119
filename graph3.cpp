@@ -1,3 +1,5 @@
+// Pedro Ribeiro - DCC/FCUP
+
 #include <iostream>
 #include <climits>
 #include <list>
