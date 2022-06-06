@@ -20,43 +20,43 @@ int main() {
 
     switch(i) {
         case 1: {
-            addgraph("../Tests_B/in01_b.txt");
+            addgraph("../input/in01_b.txt");
             break;
         }
         case 2: {
-            addgraph("../Tests_B/in02_b.txt");
+            addgraph("../input/in02_b.txt");
             break;
         }
         case 3: {
-            addgraph("../Tests_B/in03_b.txt");
+            addgraph("../input/in03_b.txt");
             break;
         }
         case 4: {
-            addgraph("../Tests_B/in04_b.txt");
+            addgraph("../input/in04_b.txt");
             break;
         }
         case 5: {
-            addgraph("../Tests_B/in05_b.txt");
+            addgraph("../input/in05_b.txt");
             break;
         }
         case 6: {
-            addgraph("../Tests_B/in06_b.txt");
+            addgraph("../input/in06_b.txt");
             break;
         }
         case 7: {
-            addgraph("../Tests_B/in07_b.txt");
+            addgraph("../input/in07_b.txt");
             break;
         }
         case 8: {
-            addgraph("../Tests_B/in08_b.txt");
+            addgraph("../input/in08_b.txt");
             break;
         }
         case 9: {
-            addgraph("../Tests_B/in09_b.txt");
+            addgraph("../input/in09_b.txt");
             break;
         }
         case 10: {
-            addgraph("../Tests_B/in10_b.txt");
+            addgraph("../input/in10_b.txt");
             break;
         }
     }
